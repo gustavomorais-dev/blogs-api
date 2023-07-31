@@ -1,6 +1,6 @@
 const { User } = require('../models');
-const HTTP_STATUS = require('../utils/statusHTTP');
-const { createToken } = require('../utils/token');
+const { createToken } = require('../utils/jwt.util');
+const HTTP_STATUS = require('../utils/statusHTTP.util');
 
 const login = async (userEmail, userPassword) => {
     const user = await User.findOne({

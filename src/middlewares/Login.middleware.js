@@ -1,4 +1,4 @@
-const HTTP_STATUS = require('../utils/statusHTTP');
+const HTTP_STATUS = require('../utils/statusHTTP.util');
 
 const validateLoginFields = (req, res, next) => {
   const { email, password } = req.body;
