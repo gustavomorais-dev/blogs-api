@@ -1,5 +1,9 @@
+// Imports
+
 const { userService } = require('../services');
 const HTTP_STATUS = require('../utils/statusHTTP.util');
+
+// Cria um novo usuário
 
 const createUser = async (req, res) => {
   const { email, password, displayName, image } = req.body;
@@ -17,6 +21,25 @@ const createUser = async (req, res) => {
   }
 };
 
+// Retorna todos os usuários
+
+const getAllUsers = async (req, res) => {
+  try {
+    const { status, data } = await userService.getAllUsers();
+
+    return res.status(status).json(data);
+  } catch (error) {
+    console.error('Ocorreu um erro:', error);
+
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Ocorreu um erro no servidor.' });
+  }
+};
+
+// Exports
+
 module.exports = {
   createUser,
+  getAllUsers,
 };

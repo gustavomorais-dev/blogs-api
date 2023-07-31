@@ -11,6 +11,9 @@ const config = {
 
 const createToken = (data) => JWT.sign(data, secret, config);
 
+const isValidToken = (token) => JWT.verify(token, secret);
+
 module.exports = {
   createToken,
+  isValidToken,
 };
