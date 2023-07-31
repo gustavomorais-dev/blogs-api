@@ -9,4 +9,10 @@ route.post(
   categoryController.createCategory,
 );
 
+route.get(
+  '/',
+  authMiddlewares.tokenValidation,
+  categoryController.getAllCategories,
+);
+
 module.exports = route;

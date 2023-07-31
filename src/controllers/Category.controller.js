@@ -17,6 +17,21 @@ const createCategory = async (req, res) => {
   }
 };
 
+const getAllCategories = async (req, res) => {
+  try {
+    const { status, data } = await categoryService.getAllCategories();
+
+    return res.status(status).json(data);
+  } catch (error) {
+    console.error('Ocorreu um erro:', error);
+
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Ocorreu um erro no servidor.' });
+  }
+};
+
 module.exports = {
   createCategory,
+  getAllCategories,
 };

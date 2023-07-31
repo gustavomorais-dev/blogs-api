@@ -19,8 +19,16 @@ const createCategory = async (name) => {
   return { status: HTTP_STATUS.CREATED, data: newCategory };
 };
 
+// Retorna todos as categorias
+
+const getAllCategories = async () => {
+  const users = await Category.findAll();
+  return { status: HTTP_STATUS.OK, data: users };
+};
+
 // Exports
 
 module.exports = {
   createCategory,
+  getAllCategories,
 };
