@@ -11,7 +11,13 @@ const config = {
 
 const createToken = (data) => JWT.sign(data, secret, config);
 
-const isValidToken = (token) => JWT.verify(token, secret);
+const isValidToken = (token) => {
+  try {
+    return JWT.verify(token, secret);
+  } catch (error) {
+    return false;
+  }
+};
 
 module.exports = {
   createToken,

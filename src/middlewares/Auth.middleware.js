@@ -12,11 +12,15 @@ const tokenValidation = (req, res, next) => {
     return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Token not found' });
   }
 
-  if (!auth.startsWith('Bearer ')) {
-    return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Expired or invalid token' });
-  }
+  const hasBearerPrefix = auth.startsWith('Bearer ');
 
-  const token = auth.split(' ')[1];
+  let token;
+
+  if (hasBearerPrefix) {
+    token = auth.slice('Bearer '.length);
+  } else {
+    token = auth;
+  }
 
   const validToken = isValidToken(token);
 
