@@ -37,9 +37,28 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// Retorna um usuário buscando pelo ID
+
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const { status, data } = await userService.getUserById(id);
+
+    return res.status(status).json(data);
+  } catch (error) {
+    console.error('Ocorreu um erro:', error);
+
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Ocorreu um erro no servidor.' });
+  }
+};
+
 // Exports
 
 module.exports = {
   createUser,
   getAllUsers,
+  getUserById,
 };
