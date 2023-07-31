@@ -1,6 +1,6 @@
 const HTTP_STATUS = require('../utils/statusHTTP');
 
-const validateLoginParams = (req, res, next) => {
+const validateLoginFields = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -15,5 +15,5 @@ const validateLoginParams = (req, res, next) => {
 };
 
 module.exports = {
-  validateLoginParams,
+  validateLoginFields,
 };
