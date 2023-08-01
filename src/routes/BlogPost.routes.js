@@ -10,6 +10,12 @@ route.post(
 );
 
 route.get(
+  '/search',
+  authMiddlewares.tokenValidation,
+  blogPostController.searchBlogPost,
+);
+
+route.get(
   '/',
   authMiddlewares.tokenValidation,
   blogPostController.getAllBlogPosts,

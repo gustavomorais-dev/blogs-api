@@ -3,6 +3,8 @@
 // e a cor vermelha no arquivo enquanto eu codava estava me incomodando bastante kkkk
 // eslint-disable-next-line import/no-unresolved
 const Sequelize = require('sequelize');
+
+const { Op } = Sequelize;
 const config = require('../config/config');
 
 const { BlogPost, PostCategory, User, Category } = require('../models');
@@ -142,6 +144,30 @@ const deleteBlogPostById = async (id, userId) => {
   return { status: HTTP_STATUS.NO_CONTENT, data: null };
 };
 
+// Busca um post por um termo no title ou content
+
+const searchBlogPost = async (query) => {
+  const blogPosts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${query}%` } },
+        { content: { [Op.like]: `%${query}%` } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'blogPosts', attributes: ['id', 'name'], through: { attributes: [] } },
+    ],
+    attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
+  });
+
+  if (blogPosts.length === 0) {
+    return { status: HTTP_STATUS.OK, data: [] };
+  }
+
+  return { status: HTTP_STATUS.OK, data: blogPosts.map(formatBlogPost) };
+};
+
 // Exports
 
 module.exports = {
@@ -150,4 +176,5 @@ module.exports = {
   getBlogPostById,
   updateBlogPostById,
   deleteBlogPostById,
+  searchBlogPost,
 };
