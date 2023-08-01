@@ -121,6 +121,27 @@ const updateBlogPostById = async (id, newData, userId) => {
   return { status: HTTP_STATUS.OK, data: formatBlogPost(blogPost) };
 };
 
+// Deleta um post pelo ID
+
+const deleteBlogPostById = async (id, userId) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+  });
+  if (!post) {
+    return { status: HTTP_STATUS.NOT_FOUND, data: { message: 'Post does not exist' } };
+  }
+
+  if (post.userId !== userId) {
+    return { status: HTTP_STATUS.UNAUTHORIZED, data: { message: 'Unauthorized user' } };
+  }
+
+  await BlogPost.destroy({
+    where: { id },
+  });
+
+  return { status: HTTP_STATUS.NO_CONTENT, data: null };
+};
+
 // Exports
 
 module.exports = {
@@ -128,4 +149,5 @@ module.exports = {
   getAllBlogPosts,
   getBlogPostById,
   updateBlogPostById,
+  deleteBlogPostById,
 };

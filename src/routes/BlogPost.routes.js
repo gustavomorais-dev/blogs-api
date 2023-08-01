@@ -28,4 +28,10 @@ route.put(
   blogPostController.updateBlogPostById,
 );
 
+route.delete(
+  '/:id',
+  authMiddlewares.tokenValidation,
+  blogPostController.deleteBlogPostById,
+);
+
 module.exports = route;
