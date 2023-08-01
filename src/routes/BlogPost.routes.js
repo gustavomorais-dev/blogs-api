@@ -9,4 +9,10 @@ route.post(
   blogPostController.createBlogPost,
 );
 
+route.get(
+  '/',
+  authMiddlewares.tokenValidation,
+  blogPostController.getAllBlogPosts,
+);
+
 module.exports = route;

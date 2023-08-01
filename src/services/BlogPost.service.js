@@ -5,7 +5,7 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config');
 
-const { BlogPost, PostCategory } = require('../models');
+const { BlogPost, PostCategory, User, Category } = require('../models');
 const HTTP_STATUS = require('../utils/statusHTTP.util');
 const { getCategoryById } = require('./Category.service');
 
@@ -41,8 +41,46 @@ const createBlogPost = async (title, content, userId, categoryIds) => {
   }
 };
 
+// Retorna todos os blogposts
+
+// Função auxiliar para formatar os dados de um post
+
+const formatBlogPost = (post) => ({
+  id: post.id,
+  title: post.title,
+  content: post.content,
+  userId: post.userId,
+  published: post.published,
+  updated: post.updated,
+  user: {
+    id: post.user.id,
+    displayName: post.user.displayName,
+    email: post.user.email,
+    image: post.user.image,
+  },
+  categories: post.blogPosts.map((category) => ({
+    id: category.id,
+    name: category.name,
+  })),
+});
+
+// Função principal para obter todos os posts formatados
+
+const getAllBlogPosts = async () => {
+  const blogPosts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'blogPosts', attributes: ['id', 'name'], through: { attributes: [] } },
+    ],
+    attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
+  });
+
+  return { status: HTTP_STATUS.OK, data: blogPosts.map(formatBlogPost) };
+};
+
 // Exports
 
 module.exports = {
   createBlogPost,
+  getAllBlogPosts,
 };
