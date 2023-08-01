@@ -21,4 +21,11 @@ route.get(
   blogPostController.getBlogPostById,
 );
 
+route.put(
+  '/:id',
+  authMiddlewares.tokenValidation,
+  blogPostMiddlewares.validateUpdateBlogPostFields,
+  blogPostController.updateBlogPostById,
+);
+
 module.exports = route;

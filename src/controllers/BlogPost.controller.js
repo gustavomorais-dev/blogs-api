@@ -50,8 +50,27 @@ const getBlogPostById = async (req, res) => {
   }
 };
 
+const updateBlogPostById = async (req, res) => {
+  const { id } = req.params;
+  const newData = req.body;
+
+  try {
+    const userId = await getUserIdByEmail(req.userEmail);
+    const { status, data } = await blogPostService.updateBlogPostById(id, newData, userId);
+
+    return res.status(status).json(data);
+  } catch (error) {
+    console.error('Ocorreu um erro:', error);
+
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Ocorreu um erro no servidor.' });
+  }
+};
+
 module.exports = {
   createBlogPost,
   getAllBlogPosts,
   getBlogPostById,
+  updateBlogPostById,
 };

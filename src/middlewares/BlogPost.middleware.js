@@ -21,6 +21,21 @@ const validateBlogPostFields = async (req, res, next) => {
   next();
 };
 
+const validateUpdateBlogPostFields = async (req, res, next) => {
+  const { title, content } = req.body;
+
+  if (!title || !content) {
+    return res
+      .status(HTTP_STATUS.BAD_REQUEST)
+      .json({
+        message: 'Some required fields are missing',
+      });
+  }
+
+  next();
+};
+
 module.exports = {
   validateBlogPostFields,
+  validateUpdateBlogPostFields,
 };

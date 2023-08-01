@@ -97,10 +97,35 @@ const getBlogPostById = async (id) => {
   return { status: HTTP_STATUS.OK, data: formatBlogPost(post) };
 };
 
+// Retorna um post pelo ID
+
+const updateBlogPostById = async (id, newData, userId) => {
+  const blogPost = await BlogPost.findOne({
+    where: { id, userId },
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'blogPosts', attributes: ['id', 'name'], through: { attributes: [] } },
+    ],
+    attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
+  });
+
+  if (!blogPost) {
+    return { status: HTTP_STATUS.UNAUTHORIZED, data: { message: 'Unauthorized user' } };
+  }
+
+  blogPost.title = newData.title;
+  blogPost.content = newData.content;
+
+  await blogPost.save();
+
+  return { status: HTTP_STATUS.OK, data: formatBlogPost(blogPost) };
+};
+
 // Exports
 
 module.exports = {
   createBlogPost,
   getAllBlogPosts,
   getBlogPostById,
+  updateBlogPostById,
 };
