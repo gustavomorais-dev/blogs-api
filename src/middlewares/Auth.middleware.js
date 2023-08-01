@@ -1,11 +1,11 @@
 // Imports
 
-const { isValidToken } = require('../utils/jwt.util');
+const { isValidToken, getEmailFromToken } = require('../utils/jwt.util');
 const HTTP_STATUS = require('../utils/statusHTTP.util');
 
 // Middleware de validação de token
 
-const tokenValidation = (req, res, next) => {
+const tokenValidation = async (req, res, next) => {
   const auth = req.header('Authorization');
 
   if (!auth) {
@@ -27,6 +27,8 @@ const tokenValidation = (req, res, next) => {
   if (!validToken) {
     return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Expired or invalid token' });
   }
+
+  req.userEmail = await getEmailFromToken(token);
 
   next();
 };

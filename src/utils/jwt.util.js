@@ -19,7 +19,17 @@ const isValidToken = (token) => {
   }
 };
 
+const getEmailFromToken = (token) => {
+  try {
+    const decodedToken = JWT.verify(token, secret);
+    return decodedToken;
+  } catch (error) {
+    return null;
+  }
+};
+
 module.exports = {
   createToken,
   isValidToken,
+  getEmailFromToken,
 };

@@ -26,9 +26,28 @@ const getAllCategories = async () => {
   return { status: HTTP_STATUS.OK, data: users };
 };
 
+// Retorna uma categoria pelo Id
+
+// Retorna um usuário cadastrado buscando pelo ID
+
+const getCategoryById = async (id) => {
+  const category = await Category.findOne({
+    where: { id },
+  });
+
+  if (!category) {
+    return {
+      status: HTTP_STATUS.NOT_FOUND,
+      data: { message: '"categoryId" not found' } };
+  }
+
+  return { status: HTTP_STATUS.OK, data: category };
+};
+
 // Exports
 
 module.exports = {
   createCategory,
   getAllCategories,
+  getCategoryById,
 };

@@ -1,5 +1,5 @@
 const HTTP_STATUS = require('../../utils/statusHTTP.util');
-const { displayNameSchema, passwordSchema, emailSchema } = require('./schemas');
+const { displayNameSchema, passwordSchema, emailSchema, categoryIdsSchema } = require('./schemas');
 
 const isValidDisplayName = async (data) => {
   const { error } = displayNameSchema.validate(data);
@@ -19,8 +19,15 @@ const isValidEmail = async (data) => {
   if (error) return { status: HTTP_STATUS.BAD_REQUEST, message };
 };
 
+const isValidCategoryIds = async (data) => {
+  const { error } = categoryIdsSchema.validate(data);
+  const message = 'one or more "categoryIds" not found';
+  if (error) return { status: HTTP_STATUS.BAD_REQUEST, message };
+};
+
 module.exports = {
   isValidDisplayName,
   isValidPassword,
   isValidEmail,
+  isValidCategoryIds,
 };

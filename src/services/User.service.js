@@ -51,10 +51,26 @@ const getUserById = async (id) => {
   return { status: HTTP_STATUS.OK, data: user };
 };
 
+// Retornar um usuário cadastrado buscando pelo email
+
+const getUserIdByEmail = async (email) => {
+    const user = await User.findOne({
+      where: { email },
+      attributes: ['id'],
+    });
+
+    if (user) {
+      return user.id;
+    }
+
+    return null;
+};
+
 // Exports
 
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  getUserIdByEmail,
 };
