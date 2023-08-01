@@ -15,4 +15,10 @@ route.get(
   blogPostController.getAllBlogPosts,
 );
 
+route.get(
+  '/:id',
+  authMiddlewares.tokenValidation,
+  blogPostController.getBlogPostById,
+);
+
 module.exports = route;

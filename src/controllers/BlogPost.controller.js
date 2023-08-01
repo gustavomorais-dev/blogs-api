@@ -34,7 +34,24 @@ const getAllBlogPosts = async (req, res) => {
   }
 };
 
+const getBlogPostById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const { status, data } = await blogPostService.getBlogPostById(id);
+
+    return res.status(status).json(data);
+  } catch (error) {
+    console.error('Ocorreu um erro:', error);
+
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Ocorreu um erro no servidor.' });
+  }
+};
+
 module.exports = {
   createBlogPost,
   getAllBlogPosts,
+  getBlogPostById,
 };

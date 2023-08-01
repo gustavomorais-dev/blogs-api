@@ -78,9 +78,29 @@ const getAllBlogPosts = async () => {
   return { status: HTTP_STATUS.OK, data: blogPosts.map(formatBlogPost) };
 };
 
+// Retorna um post pelo ID
+
+const getBlogPostById = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'blogPosts', attributes: ['id', 'name'], through: { attributes: [] } },
+    ],
+    attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
+  });
+
+  if (!post) {
+    return { status: HTTP_STATUS.NOT_FOUND, data: { message: 'Post does not exist' } };
+  }
+
+  return { status: HTTP_STATUS.OK, data: formatBlogPost(post) };
+};
+
 // Exports
 
 module.exports = {
   createBlogPost,
   getAllBlogPosts,
+  getBlogPostById,
 };
