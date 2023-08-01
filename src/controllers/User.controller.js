@@ -1,6 +1,7 @@
 // Imports
 
 const { userService } = require('../services');
+const { getUserIdByEmail } = require('../services/User.service');
 const HTTP_STATUS = require('../utils/statusHTTP.util');
 
 // Cria um novo usuário
@@ -55,10 +56,28 @@ const getUserById = async (req, res) => {
   }
 };
 
+// Deleta o usuário que fez a requisição
+
+const deleteUserById = async (req, res) => {
+  try {
+    const userId = await getUserIdByEmail(req.userEmail);
+    const { status, data } = await userService.deleteUserById(userId);
+
+    return res.status(status).json(data);
+  } catch (error) {
+    console.error('Ocorreu um erro:', error);
+
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Ocorreu um erro no servidor.' });
+  }
+};
+
 // Exports
 
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  deleteUserById,
 };

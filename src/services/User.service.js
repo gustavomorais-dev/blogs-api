@@ -66,6 +66,16 @@ const getUserIdByEmail = async (email) => {
     return null;
 };
 
+// Deleta um user pelo ID
+
+const deleteUserById = async (id) => {
+  await User.destroy({
+    where: { id },
+  });
+
+  return { status: HTTP_STATUS.NO_CONTENT, data: null };
+};
+
 // Exports
 
 module.exports = {
@@ -73,4 +83,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   getUserIdByEmail,
+  deleteUserById,
 };

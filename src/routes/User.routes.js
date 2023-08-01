@@ -7,4 +7,10 @@ route.post('/', userMiddlewares.validateCreateUserFields, userController.createU
 route.get('/', authMiddlewares.tokenValidation, userController.getAllUsers);
 route.get('/:id', authMiddlewares.tokenValidation, userController.getUserById);
 
+route.delete(
+  '/me',
+  authMiddlewares.tokenValidation,
+  userController.deleteUserById,
+);
+
 module.exports = route;
